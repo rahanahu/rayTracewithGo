@@ -1,6 +1,10 @@
 package vec3
 
-import "math"
+import (
+	"fmt"
+	"io"
+	"math"
+)
 
 type Vec3 struct {
 	X float64
@@ -66,4 +70,9 @@ func (a *Vec3) Cross(t *Vec3) *Vec3 {
 
 func (a *Vec3) UnitVector() *Vec3 {
 	return a.Scale(1 / a.Length())
+}
+
+func (a *Vec3) WriteColor(out io.Writer) {
+	c := fmt.Sprintf("%d %d %d\n", int(255.99*a.X), int(255.99*a.Y), int(255.99*a.Z))
+	out.Write([]byte(c))
 }

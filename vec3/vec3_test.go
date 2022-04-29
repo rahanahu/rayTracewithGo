@@ -1,6 +1,7 @@
 package vec3
 
 import (
+	"bytes"
 	"math"
 	"reflect"
 	"testing"
@@ -380,6 +381,39 @@ func TestVec3_UnitVector(t *testing.T) {
 				(math.Abs(got.Y-tt.want.Y) < d) &&
 				(math.Abs(got.Z-tt.want.Z) < d)) {
 				t.Errorf("Vec3.UnitVector() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestVec3_WriteColor(t *testing.T) {
+	type fields struct {
+		X float64
+		Y float64
+		Z float64
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		wantOut string
+	}{
+		{
+			name:    "write color",
+			fields:  fields{0.4, 0.2, 0.4},
+			wantOut: "102 51 102¥n",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			a := &Vec3{
+				X: tt.fields.X,
+				Y: tt.fields.Y,
+				Z: tt.fields.Z,
+			}
+			out := &bytes.Buffer{}
+			a.WriteColor(out)
+			if gotOut := out.String(); gotOut != tt.wantOut {
+				t.Errorf("Vec3.WriteColor() = %v, want %v", gotOut, tt.wantOut)
 			}
 		})
 	}
